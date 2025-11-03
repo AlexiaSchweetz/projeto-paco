@@ -1,0 +1,36 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 300 !important;
+}
+
+body h3 {
+    font-weight: 300 !important;
+}
+
+body b {
+    font-weight: 600 !important;
+}
+
+.rounded-circle {
+    height: 3em;
+    width: 3em;
+}
+
+.form-item {
+    width: 200px;
+    height: 120px;
+}
+
+input {
+    font-size: 40px !important;
+}
+
+select {
+    font-size: 40px !important;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
