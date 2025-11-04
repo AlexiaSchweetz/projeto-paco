@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const tabelaBody = document.getElementById("tabelaHistorico");
     const paginacao = document.getElementById("paginacao");
 
-    let taxas = {}; 
+    let taxas = {};
 
     const res = await fetch(API_SYMBOLS);
     const data = await res.json();
@@ -30,61 +30,64 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
     taxas = data.rates;
 
-    document.getElementById("converterBtn").addEventListener("click", () => {
-        const de = moedaOrigem.value;
-        const para = moedaDestino.value;
-        const valor = parseFloat(valorInput.value);
+    document
+        .getElementById("converterBtn")
+        .addEventListener("click", async () => {
+            const de = moedaOrigem.value;
+            const para = moedaDestino.value;
+            const valor = parseFloat(valorInput.value);
 
-        if (!de || !para || isNaN(valor)) return alert("Campos inválidos");
+            if (!de || !para || isNaN(valor)) return alert("Campos inválidos");
 
-        const taxaDe = taxas[de];
-        const taxaPara = taxas[para];
+            const taxaDe = taxas[de];
+            const taxaPara = taxas[para];
 
-        if (!taxaDe || !taxaPara) return alert("Moeda não encontrada");
+            if (!taxaDe || !taxaPara) return alert("Moeda não encontrada");
 
-        const convertido = (valor / taxaDe) * taxaPara;
-        const taxaFinal = convertido / valor;
+            const convertido = (valor / taxaDe) * taxaPara;
+            const taxaFinal = convertido / valor;
 
-        resultadoAtual = {
-            par_moeda: `${de}/${para}`,
-            valor: valor
-        };
+            resultadoAtual = {
+                moeda_origem: de,
+                moeda_destino: para,
+                valor,
+                convertido,
+            };
 
-        resultadoDiv.innerHTML = `<strong>${valor} ${de} = ${convertido.toFixed(
-            2
-        )} ${para}</strong>`;
-    });
+            resultadoDiv.value = convertido.toFixed(2);
 
-    document.getElementById("salvarBtn").addEventListener("click", async () => {
-        if (!resultadoAtual) return alert("Nenhuma conversão realizada ainda.");
+            if (!resultadoAtual)
+                return alert("Nenhuma conversão realizada ainda.");
 
-        try {
-            const res = await fetch(API_SALVAR, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(resultadoAtual),
-            });
+            try {
+                const res = await fetch(API_SALVAR, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(resultadoAtual),
+                });
 
-            if (!res.ok) throw new Error();
+                if (!res.ok) throw new Error();
 
-            alert("Conversão salva com sucesso!");
-            carregarHistorico();
-        } catch (err) {
-            alert("Erro ao salvar conversão");
-        }
-    });
+                carregarHistorico();
+            } catch (err) {
+                alert("Erro ao salvar conversão");
+            }
+        });
 
     function renderTabela(dados) {
         tabelaBody.innerHTML = "";
         dados.forEach((item) => {
             tabelaBody.innerHTML += `
         <tr>
-          <td>${item.par_moeda}</td>
-          <td>${item.valor}</td> 
+          <td><b>${item.moeda_origem}</b></td>
+          <td class='fw-medium'>$ ${item.valor}</td> 
+          <td>PARA</td> 
+          <td><b>${item.moeda_destino}</b></td>
+          <td class='fw-medium'>$ ${item.convertido}</td> 
         </tr>
       `;
         });
@@ -120,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const dadosPagina = data.slice(inicio, fim);
 
             renderTabela(dadosPagina);
-            renderPaginacao(data.length, porPagina, paginaAtual);
+            // renderPaginacao(data.length, porPagina, paginaAtual);
         } catch (err) {
             alert("Erro ao carregar histórico.");
         }

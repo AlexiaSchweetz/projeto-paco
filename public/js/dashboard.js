@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         const taxaFinal = convertido / valor;
 
         resultadoAtual = {
-            par_moeda: `${de}/${para}`,
-            valor: valor
+            moeda_origem: de,
+            moeda_destino: para,
+            valor,
+            convertido
         };
 
-        resultadoDiv.innerHTML = `<strong>${valor} ${de} = ${convertido.toFixed(
-            2
-        )} ${para}</strong>`;
+        resultadoDiv.value = convertido.toFixed(2);
     });
 
     // Salvar conversão
@@ -88,8 +88,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         dados.forEach((item) => {
             tabelaBody.innerHTML += `
         <tr>
-          <td>${item.par_moeda}</td>
-          <td>${item.valor}</td> 
+          <td>${item.moeda_origem}</td>
+          <td>$ ${item.valor.toFixed(2)}</td> 
+          <td>PARA</td> 
+          <td>${item.moeda_destino}</td>
+          <td>$ ${item.convertido.toFixed()}</td> 
         </tr>
       `;
         });

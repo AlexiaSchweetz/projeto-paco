@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('variacoes_moedas', function (Blueprint $table) {
             $table->id();
-            $table->string('par_moeda');  
-            $table->decimal('valor', 15, 6);   
+            $table->string('moeda_origem');  
+            $table->string('moeda_destino');  
+            $table->decimal('valor', 15, 2); 
+            $table->decimal('convertido', 15, 2);
             $table->timestamps();  
         });
     }

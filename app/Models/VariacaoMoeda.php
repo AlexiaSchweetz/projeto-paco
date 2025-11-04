@@ -9,8 +9,10 @@ class VariacaoMoeda extends Model
     protected $table = 'variacoes_moedas';
 
     protected $fillable = [
-        'par_moeda',
-        'valor', 
+        'moeda_origem',
+        'moeda_destino',
+        'valor',
+        'convertido'
     ];
 
     public $timestamps = true;

@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.access_token) {
                 localStorage.setItem("access_token", data.access_token);
-                window.location.href = "/dashboard";
+                window.location.href = "/home";
             } else {
                 alert("Erro ao logar");
                 console.log(data);

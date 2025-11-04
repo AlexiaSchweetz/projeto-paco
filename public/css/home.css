@@ -34,3 +34,7 @@ select {
 .form-control:focus {
     box-shadow: none;
 }
+
+.d-title {
+    font-size: 12px;
+}
